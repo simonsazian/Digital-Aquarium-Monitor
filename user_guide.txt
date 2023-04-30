@@ -1,0 +1,23 @@
+Setup:
+- First, ensure that both Arduino Uno's are plugged into a computer or USB power source.
+- Next, load the proper .ino file used to process I/O from the hardware components.
+- Connect the two Arduino boards to establish serial communication (1 wire to GND on each, 2 alternating between RX and TX on each board).
+- After this step the system is ready for use.
+
+Subsystem 1: Temperature Measurement
+- First, get the temperature sensor, which is a stainless steel probe connected to the end of a long wire, from the breadboard.
+- Place the sensor inside of the aquarium tank water.
+- Wait approximately 60 seconds for the sensor to properly acclimate to the temperature of the water.
+- Read the output shown on the LCD monitor, which will output the temperature in both Fahrenheit and Celsius.
+-If temperature is outside of valid bounds for tropical aquarium fish, address issue before moving on to test subsystem 2.
+
+Subsystem 2: Ammonia/Nitrite Monitor
+- First, fill a standard API Test Kit test tube up to the white line indicated with aquarium water.
+- Select the chemical testing solution that matches with the desired metric.
+- Add the indicated number of drops to the testing vial and shake for 5 seconds.
+- Wait around 1-2 minutes. This is to ensure that the chemical reaction has enough time to be fully completed before taking any measurements.
+- Place the test tube on top of the RGB color sensor & cover until no ambient light can reach the test tube.
+- Select the appropriate button to indicate which metric you want to measure, and confirm by checking the output on the LCD screen.
+- Now, read the measurement from the LCD screen. The green or red LED will also light up based on whether or not the 
+  measured ammonia/nitrite levels were within parameters that are safe for fish to inhabit.
+- Empty the test tube, rinse and dry thoroughly before the next run.
