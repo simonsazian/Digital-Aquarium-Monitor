@@ -1,0 +1,35 @@
+Materials Needed
+1. Two Arduino Uno's and corresponding breadboards, 
+2. Two LCD monitors
+3. Green and red LEDs
+4. 4 220 Ohm resistors, 1 10K resistor, 2 1K resistors
+4. TC-34725 RGB color sensor
+5. DS18B20 temperature probe
+6. 2 Buttons 
+7. Testing solution for treating the water and test vials.
+
+Subsystem 1: Temperature Measurement
+1. First, wire the Arduino’s GND pin to the GND rail and 5V PS to the PS rail.
+2. Wire the 2x16 LCD screen to the breadboard. Link the components of the LCD to
+Arduino in the respective arrangement: rs = 9, en = 8, d4 = 2, d5 = 3, d6 = 4, d7 = 7. Wire
+VSS, RW, and K to GND rail. Link VDD to PS rail as well as A with a 220 Ohm resistor
+attached.
+It is optional to include a potentiometer, but if included, wire V0 to the center pin on the
+potentiometer and the remaining pins on the GND rail and PS rail.
+3. Add 2 LED’s, green and red. Dedicate the green led to pin 5 and the red to pin 6,
+including 220 ohm resistors for each LED. GND both LEDs.
+4. The temperature probe requires the red wire to be linked to the PS rail, the blue should
+link to pin 2 on the Arduino, and black goes to GND. An additional wire should connect
+the blue wire to a 220 Ohm resistor and connect back to the red wire of the temperature
+probe.
+
+Subsystem 2: Ammonia/Nitrite Monitor
+1. Begin by repeating steps 1 and 2 from subsystem 1.
+2. Attach the color sensor to the breadboard, then connect the following pins:
+Connect SCL to Arduino SCL
+Connect SDA to Arduino SDA
+Connect VIN to 5V DC
+Connect GROUND to common ground GND
+3. Utilize available pins 5 and 6 for buttons used to control whether ammonia or nitrate
+testing will be initiated. Be sure to ground. Include 1k ohm resistors for each respective
+button.
