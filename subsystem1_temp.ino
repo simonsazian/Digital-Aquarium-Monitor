@@ -60,9 +60,6 @@ void loop()
   if (Serial.available() > 0) { //***************************************
     int byte = Serial.read();
     counter++;  
-
-    lcd.clear();
-    lcd.print(counter);
   
     Serial.end();
     Serial.begin(115200);
@@ -93,7 +90,7 @@ void loop()
     lcd.print(" F");
 
     // INVALID BOUNDS
-    if (tempC < 21 || tempC > 28 || ((counter % 2) != 0)) {
+    if (tempC < 23 || tempC > 28 || ((counter % 2) != 0)) {
       digitalWrite(LEDGPin,LOW);
       digitalWrite(LEDRPin,HIGH);
     } 

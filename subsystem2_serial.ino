@@ -1,5 +1,5 @@
 /*
-Code written by Simon Sazian in Spring 2023 for CS 362
+Code written by Simon Sazian in Spring 2023 for CS 362 
 Digital Aquarium Monitor- Subsystem 2: Ammonia/nitrite sensor
 
 The purpose of the code is to detect and output the nitrite or ammonia parts per million (ppm) of
@@ -39,12 +39,12 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 // Define constant values for all possbile nitrite and ammonia values
 // Reference array of all known ammonia values
-const int ammonia_references[7][3] = {{87, 101, 78}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
-// Values stored in order: 0 ppm, 0.25 ppm, 0.5 ppm, 1 ppm, 2 ppm, 4 ppm, 8 ppm
+const int ammonia_references[7][3] = {{92, 103, 79}, {83, 106, 85}, {115, 122, 72}, {115, 140, 96}, {125, 145, 110}, {155, 149, 130}, {161, 158, 160}};
+// Values stored in order: 0 ppm, 0.25.0 ppm, 0.5.0 ppm, 1.0 ppm, 2.0 ppm, 4.0 ppm, 8.0 ppm
 
 // Reference array of all known nitrate values
-const int nitrite_references[6][3] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
-// Values stored in order: 0 ppm, 0.25 ppm, 0.5 ppm, 1 ppm, 2 ppm, 5 ppm
+const int nitrite_references[6][3] = {{55, 118, 130}, {73, 103, 115}, {87, 108, 114}, {102, 111, 117}, {145, 133, 132}, {172, 135, 137}};
+// Values stored in order: 0 ppm, 0.25.0 ppm, 0.5.0 ppm, 1.0 ppm, 2.0 ppm, 5.0 ppm
 
 
 // button values to determine whether to read ammonia or nitrite
@@ -109,6 +109,15 @@ void loop() {
     // calculate the ammonia reading
     int ammonia_value = measure_value(ammonia_references, 7, red, green, blue);
 
+    Serial.print("RGB: (");
+    Serial.print(red);
+    Serial.print(",");
+    Serial.print(green);
+    Serial.print(",");
+    Serial.print(blue);
+    Serial.print(")");
+    Serial.println();
+
     // output the found value
     lcd.clear();
     delay(200);
@@ -124,10 +133,8 @@ void loop() {
       if ((counter % 2) != 0) {
         // when LED changes from red -> green
         Serial.write((char)1);
-        lcd.println(" SENT");
         counter++;
       }
-      delay(5000);
     }
     else if (ammonia_value == 1) {
       lcd.print("0.25 ppm");
@@ -136,10 +143,8 @@ void loop() {
       if ((counter % 2) == 0) {
         // when LED changes from green -> red
         Serial.write((char)1);
-        lcd.println(" SENT");
         counter++;
       }
-      delay(5000);
     }
       else if (ammonia_value == 2) {
         lcd.print("0.5 ppm");
@@ -151,7 +156,7 @@ void loop() {
         }
       }
       else if (ammonia_value == 3) {
-        lcd.print("1 ppm");
+        lcd.print("1.0 ppm");
         // Write that levels are unsafe
         if ((counter % 2) == 0) {
           // when LED changes from green -> red
@@ -160,7 +165,7 @@ void loop() {
         }
       }
       else if (ammonia_value == 4) {
-        lcd.print("2 ppm");
+        lcd.print("2.0 ppm");
         // Write that levels are unsafe
         if ((counter % 2) == 0) {
           // when LED changes from green -> red
@@ -169,7 +174,7 @@ void loop() {
         }
       }
       else if (ammonia_value == 5) {
-        lcd.print("4 ppm");
+        lcd.print("4.0 ppm");
         // Write that levels are unsafe
         if ((counter % 2) == 0) {
           // when LED changes from green -> red
@@ -177,8 +182,8 @@ void loop() {
           counter++;
         }
       }
-      else if (ammonia_value == 3) {
-        lcd.print("8 ppm");
+      else if (ammonia_value == 6) {
+        lcd.print("8.0 ppm");
         // Write that levels are unsafe
         if ((counter % 2) == 0) {
           // when LED changes from green -> red
@@ -201,7 +206,6 @@ void loop() {
 
 
   // now, check whether the nitrite button was pushed
-  /*
   nitriteButtonNew=digitalRead(nitriteButtonPin);
   if (nitriteButtonOld==0 && nitriteButtonNew==1) {
     // begin taking 20 measurements to find the average
@@ -218,8 +222,14 @@ void loop() {
     // calculate the ammonia reading based on average values
     int nitrite_value = measure_value(nitrite_references, 6, red, green, blue);
 
-    Serial.print("Nitrite value: ");
-    Serial.println(nitrite_value);
+    // Serial.print("RGB: (");
+    // Serial.print(red);
+    // Serial.print(",");
+    // Serial.print(green);
+    // Serial.print(",");
+    // Serial.print(blue);
+    // Serial.print(")");
+    // Serial.println();
 
     // output the found value
     lcd.clear();
@@ -229,35 +239,64 @@ void loop() {
     lcd.setCursor(0, 1);
 
     // check which value was read, and output accordingly    
-    switch(nitrite_value) {
-      case 0:
-        lcd.print("0 ppm");
-        Serial.write("1");
-        break;
-      case 1:
-        lcd.print("0.25 ppm");
-        Serial.write((char)1);  // serial communcation
-        break;
-      case 2:
-        lcd.print("0.5 ppm");
+    if (nitrite_value == 0) {
+      lcd.print("0 ppm");
+
+      // Write to serial communication that ammonia levels are safe
+      if ((counter % 2) != 0) {
+        // when LED changes from red -> green
         Serial.write((char)1);
-        break;
-      case 3:
-        lcd.print("1 ppm");
+        counter++;
+      }
+    }
+    else if (nitrite_value == 1) {
+      lcd.print("0.25 ppm");
+
+      // Write that levels are unsafe
+      if ((counter % 2) == 0) {
+        // when LED changes from green -> red
         Serial.write((char)1);
-        break;
-      case 4:
-        lcd.print("2 ppm");
+        counter++;
+      }
+    }
+    else if (nitrite_value == 2) {
+      lcd.print("0.5 ppm");
+      // Write that levels are unsafe
+      if ((counter % 2) == 0) {
+        // when LED changes from green -> red
         Serial.write((char)1);
-        break;
-      case 5:
-        lcd.print("5 ppm");
+        counter++;
+      }
+    }
+    else if (nitrite_value == 3) {
+      lcd.print("1.0 ppm");
+      // Write that levels are unsafe
+      if ((counter % 2) == 0) {
+        // when LED changes from green -> red
         Serial.write((char)1);
-        break;
-      default:
-        lcd.print("Error, please try again");
+        counter++;
+      }
+    }
+    else if (nitrite_value == 4) {
+      lcd.print("2.0 ppm");
+      // Write that levels are unsafe
+      if ((counter % 2) == 0) {
+        // when LED changes from green -> red
         Serial.write((char)1);
-        break;
+        counter++;
+      }
+    }
+    else if (nitrite_value == 5) {
+      lcd.print("5.0 ppm");
+      // Write that levels are unsafe
+      if ((counter % 2) == 0) {
+        // when LED changes from green -> red
+        Serial.write((char)1);
+        counter++;
+      }
+    }
+    else {
+      lcd.print("Error, please try again");
     }
     
     // Pause for a few seconds for readability
@@ -268,7 +307,6 @@ void loop() {
   }
   // reset nitrite button
   nitriteButtonOld = nitriteButtonNew;
-  */
 
 }
 
@@ -301,7 +339,7 @@ void take_readings(int &redSum, int &greenSum, int &blueSum) {
     greenSum = greenSum + green;
     blueSum = blueSum + blue;
 
-    delay(500); // delay for readability
+    delay(400); // delay for readability
   }
 }
 
