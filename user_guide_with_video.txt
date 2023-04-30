@@ -21,3 +21,5 @@ Subsystem 2: Ammonia/Nitrite Monitor
 - Now, read the measurement from the LCD screen. The green or red LED will also light up based on whether or not the 
   measured ammonia/nitrite levels were within parameters that are safe for fish to inhabit.
 - Empty the test tube, rinse and dry thoroughly before the next run.
+
+Link to YouTube demo: https://www.youtube.com/watch?v=oXBYBXsmp3k
